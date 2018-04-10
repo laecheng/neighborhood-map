@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      html,
+      body {
+        font-family: Arial, sans-serif;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        height: 100%;
+        position: relative;
+      }
+
+      input {
+        font-size: 12px;
+      }
+
+      h1 {
+        color: #525454;
+        font-size: 22px;
+        margin: 0 0 10px 0;
+        text-align: center;
+      }
+
+      #map {
+        bottom:0px;
+        height: 100%;
+        left: 262px;
+        position: absolute;
+        right: 0px;
+      }
+
+      .options-box {
+        background: #fff;
+        border: 1px solid #999;
+        border-radius: 3px;
+        height: 100%;
+        line-height: 35px;
+        padding: 10px 10px 30px 10px;
+        text-align: left;
+        width: 240px;
+      }
+
+      #pano {
+        width: 200px;
+        height: 200px;
+      }
+
+      #places-search,
+      #search-within-time-text {
+        width: 75%;
+      }
+
+      .text {
+        font-size: 12px;
+      }
+
+      #toggle-drawing {
+        width: 27%;
+        position: relative;
+        margin-left: 10px;
+      }
+
+      #zoom-to-area-text {
+        width: 70%;
+      }
+
+      #zoom-to-area {
+        width: 24%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="options-box">
+        <h1>Bart location</h1>
+        <div>
+          <input id="places-search" type="text" placeholder="Station location">
+          <input id="go-places" type="button" value="Filter">
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+    <script>
+      var map;
+      function initMap() {
+        // Constructor creates a new map - only center and zoom are required.
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 40.7413549, lng: -83.9980244},
+          zoom: 13
+        });
+      }
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqY_eKWsmk2gwkNSjGoQm09r7VquMn65g&v=3&callback=initMap">
+    </script>
