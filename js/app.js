@@ -143,7 +143,7 @@ function loadApp() {
         $("#nytElem").html("");
         for(var i = 0; i < len; i++) {
           var article = articles[i];
-          $("#nytElem").append('<li><a href="'+article.url+'">'+ article.headline.main+'</a></li>');
+          $("#nytElem").append('<li><a href="'+article.web_url+'">'+ article.headline.main+'</a></li>');
         };
       }).fail(function(e) {
         $("#nytElem").append("<li>can not load news from New York Times</li>")
