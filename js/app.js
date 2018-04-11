@@ -67,6 +67,15 @@ function loadApp() {
       content: data['title']
     }));
 
+    self.marker().addListener('click', function() {
+      self.infoWindow().open(map, this);
+      self.marker().setAnimation(google.maps.Animation.BOUNCE);
+    });
+
+    self.infoWindow().addListener('closeclick', function() {
+      self.marker().setAnimation(null);
+    })
+
     this.showInfo = function() {
       self.marker().setAnimation(google.maps.Animation.BOUNCE);
       self.infoWindow().open(map, self.marker());
@@ -84,11 +93,12 @@ function loadApp() {
         self.marker().setMap(null);
       }
     }, this);
+
   };
 
   var Article = function(data) {
-    this.url = ko.observable(data['web_url'])
-    this.headline = ko.observable(data['headline']);
+    this.url = ko.observable(data.web_url)
+    this.headline = ko.observable(data.headline.main);
   }
 
   // the MVVM's view model
@@ -100,6 +110,8 @@ function loadApp() {
     this.markerList = ko.observableArray([]);
 
     this.articleList = ko.observableArray([]);
+
+    this.nytError = ko.observable("");
 
     initialMarkers.forEach(function(markerItem) {
       self.markerList.push(new Marker(markerItem));
@@ -139,14 +151,12 @@ function loadApp() {
 
       $.getJSON(url, function(data) {
         articles = data.response.docs;
-        var len = Math.min(4, articles.length);
-        $("#nytElem").html("");
-        for(var i = 0; i < len; i++) {
-          var article = articles[i];
-          $("#nytElem").append('<li><a href="'+article.web_url+'">'+ article.headline.main+'</a></li>');
-        };
+        self.articleList([]);
+        articles.forEach(function(article) {
+          self.articleList.push(new Article(article));
+        });
       }).fail(function(e) {
-        $("#nytElem").append("<li>can not load news from New York Times</li>")
+        self.nytError("Sorry, Can not load news from New York Times.")
       });
     };
   };
