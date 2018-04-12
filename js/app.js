@@ -32,7 +32,7 @@ var initialMarkers = [
     title: 'Lakeshore',
     location: {lat: 37.723641, lng: -122.493824}
   }
-]
+];
 
 
 function handleError() {
@@ -54,52 +54,52 @@ function loadApp() {
 
   // the marker model
   var Marker = function(data) {
-    var self = this
+    var self = this;
 
-    this.title = ko.observable(data['title']);
-    this.location = ko.observable(data['location']);
+    this.title = ko.observable(data.title);
+    this.location = ko.observable(data.location);
     this.visibility = ko.observable(true);
     this.marker = ko.observable(new google.maps.Marker({
-      position: data['location'],
-      title: data['title']
+      position: data.location,
+      title: data.title
     }));
-    this.infoWindow = ko.observable(new google.maps.InfoWindow({
-      content: data['title']
-    }));
+    this.infoWindow = ko.observable(new google.maps.InfoWindow());
 
     self.marker().addListener('click', function() {
-      self.infoWindow().open(map, this);
-      self.marker().setAnimation(google.maps.Animation.BOUNCE);
+      self.showInfo();
     });
 
     self.infoWindow().addListener('closeclick', function() {
       self.marker().setAnimation(null);
-    })
+    });
 
     this.showInfo = function() {
-      self.marker().setAnimation(google.maps.Animation.BOUNCE);
+      var streetviewUrl = 'http://maps.googleapis.com/maps/api/streetview?size=150x100&location=' + self.title() + '';
+      var content = '<div><h3>' + self.title() + '</h3></div>' +
+                    '<img src="' + streetviewUrl + '">';
+      self.infoWindow().setContent(content);
       self.infoWindow().open(map, self.marker());
+      self.marker().setAnimation(google.maps.Animation.BOUNCE);
     };
 
     this.hideInfo = function() {
       self.marker().setAnimation(null);
       self.infoWindow().close();
-    }
+    };
 
     this.showMarker = ko.computed(function() {
-      if (self.visibility() == true) {
+      if (self.visibility() === true) {
         self.marker().setMap(map);
       } else {
         self.marker().setMap(null);
       }
     }, this);
-
   };
 
   var Article = function(data) {
-    this.url = ko.observable(data.web_url)
+    this.url = ko.observable(data.web_url);
     this.headline = ko.observable(data.headline.main);
-  }
+  };
 
   // the MVVM's view model
   var ViewModel = function() {
@@ -119,7 +119,7 @@ function loadApp() {
 
     this.filtedList = ko.computed(function() {
       var keyWord = self.keyWord().toLowerCase();
-      if (keyWord == "") {
+      if (keyWord === "") {
         self.markerList().forEach(function(marker){
           marker.visibility(true);
         });
@@ -143,20 +143,20 @@ function loadApp() {
         } else {
           markerItem.showInfo();
         }
-      })
+      });
 
       var location = self.clickedLocation().title();
       var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
       url += '?' + $.param({'sort': "newest", 'q': location, 'api-key': "ad9f92889efc44cebc50c708753d32e4"});
 
       $.getJSON(url, function(data) {
-        articles = data.response.docs;
+        var articles = data.response.docs;
         self.articleList([]);
         articles.forEach(function(article) {
           self.articleList.push(new Article(article));
         });
       }).fail(function(e) {
-        self.nytError("Sorry, Can not load news from New York Times.")
+        self.nytError("Sorry, Can not load news from New York Times.");
       });
     };
   };

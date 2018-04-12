@@ -11,12 +11,18 @@
       <div class="options-box">
         <h1>Bart location</h1>
         <div>
-          <input data-bind="textInput: keyWord, valueUpdate: 'afterkeydown'" placeholder="Station location">
+          <input data-bind="textInput: keyWord" placeholder="Station location">
         </div>
         <ul data-bind="foreach: filtedList">
           <li data-bind="text: title, click: $parent.showLocation"></li>
         </ul>
         <h1>Related News</h1>
+        <p>Supported by New York Times
+          <a href="http://developer.nytimes.com.">
+            <img id="nytLogo" src="img\poweredby_nytimes_30a.png" alt="New York Times Logo">
+            </img>
+          </a>
+        </p>
         <h2 data-bind="text: nytError"></h2>
         <ul data-bind="foreach: articleList">
           <li><a data-bind="text: headline, attr: {href: url}"></a></li>
