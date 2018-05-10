@@ -1,7 +1,7 @@
 # Neighborhood Map
   - This is a single page application written in JavaScript with Knockout Framework.
   - It uses google api and New York Times Api.
-  - This application applys MVVM design patter.
+  - This application applys MVVM design pattern.
 
 # How to Run
   ```
